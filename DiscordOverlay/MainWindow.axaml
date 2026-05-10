@@ -5,9 +5,13 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DiscordOverlay.MainWindow"
         Title="DiscordOverlay"
-        Width = "1980" Height = "1200"
+        Width = "1920" Height = "1200"
         Background = "Transparent"
         ExtendClientAreaToDecorationsHint="True"
+        
+        WindowDecorations="None"
+        Topmost = "True"
+       
         >
 
     <StackPanel>

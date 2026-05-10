@@ -87,3 +87,4 @@
 /home/SeanS/githubprojects/discord-overlay/DiscordOverlay/obj/Debug/net10.0/DiscordOverlay.pdb
 /home/SeanS/githubprojects/discord-overlay/DiscordOverlay/obj/Debug/net10.0/DiscordOverlay.genruntimeconfig.cache
 /home/SeanS/githubprojects/discord-overlay/DiscordOverlay/obj/Debug/net10.0/ref/DiscordOverlay.dll
+/home/SeanS/githubprojects/discord-overlay/DiscordOverlay/obj/Debug/net10.0/DiscordOverlay.sourcelink.json

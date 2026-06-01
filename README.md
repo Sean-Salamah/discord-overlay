@@ -1,0 +1,1 @@
+This is supposed to be a discord overlay that will work on linux like it does on windows, allowing users to see other users in the call and have it be shown when a user is talking. This is visible even if you are a fullscreen aplication open (like a game).

@@ -23,9 +23,7 @@ public partial class MainWindow : Window
         base.OnOpened(e);
         
         var discordClient = new DiscordClient();
-        discordClient.Connect();
-        discordClient.SendHandshake();
-        discordClient.ReadMessage();
+      
 
         var platformHandle = this.TryGetPlatformHandle();
 
@@ -51,7 +49,7 @@ public partial class MainWindow : Window
                 };
                 timer.Start();
 
-            //Making the window always on top
+            //Making the window always on top using X11 functions
             IntPtr wmWindowType = X11.XInternAtom(display, "_NET_WM_WINDOW_TYPE", false);
             IntPtr wmWindowTypeNotification = X11.XInternAtom(display, "_NET_WM_WINDOW_TYPE_DOCK", false);
             IntPtr wmState = X11.XInternAtom(display, "_NET_WM_STATE", false);
@@ -68,12 +66,17 @@ public partial class MainWindow : Window
             X11.XChangeProperty(display, nativeHandle, wmWindowType, XA_ATOM, 32, 0, ref wmWindowTypeNotification, 1);
             X11.XChangeProperty(display, nativeHandle, wmState, XA_ATOM, 32, 2, ref stateFullscreen, 1);
             
+        discordClient.Connect();
+        discordClient.SendHandshake();
+        discordClient.ReadMessage();
+        discordClient.Authorize();
+        discordClient.ReadMessage();
         }
     }
 
     public void keyboardPassThrough(IntPtr display, IntPtr handle)
     {
-               // this makes our keyboard inputs pass through the window
+               // this makes keyboard inputs pass through the window
         var hints = new XWMHints();
         hints.flags = 2;
         hints.input = false;

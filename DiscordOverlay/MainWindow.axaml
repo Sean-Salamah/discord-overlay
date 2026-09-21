@@ -2,21 +2,108 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:DiscordOverlay"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DiscordOverlay.MainWindow"
         Title="DiscordOverlay"
-        Width = "1920" Height = "1200"
-        Background = "Transparent"
+        Width="1920" Height="1080"
+        Background="Transparent"
         ExtendClientAreaToDecorationsHint="True"
-        
         WindowDecorations="None"
-        Topmost = "True"
-       
-        >
+        CanResize="False"
+        ShowActivated="False"
+        ShowInTaskbar="False"
+        Topmost="True"
+        X11Properties.NetWmWindowType="Dock">
 
-    <StackPanel>
-        <Button Background = "White" Opacity = "0.5">Hello World!</Button>
-        
-    </StackPanel >
-   
+    <Window.Resources>
+        <StreamGeometry x:Key="MicOffIcon">M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zm-4.02.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z</StreamGeometry>
+        <StreamGeometry x:Key="HeadsetOffIcon">M12 4c3.87 0 7 3.13 7 7v2h-2.92L21 17.92V11c0-4.97-4.03-9-9-9-1.95 0-3.76.62-5.23 1.68l1.44 1.44C9.3 4.41 10.6 4 12 4zM2.27 1.72L1 3l3.33 3.32C3.49 7.68 3 9.29 3 11v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-1.17.29-2.26.79-3.22L15 17v4h3c.3 0 .59-.06.86-.14L21 23l1.27-1.27-20-20.01z</StreamGeometry>
+    </Window.Resources>
+
+    <Window.Styles>
+        <Style Selector="Border.ring">
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style Selector="Border.ring.speaking">
+            <Setter Property="BorderBrush" Value="#23A55A" />
+        </Style>
+        <Style Selector="Border.nameplate">
+            <Setter Property="Background" Value="#99111214" />
+        </Style>
+        <Style Selector="Border.nameplate.speaking">
+            <Setter Property="Background" Value="#E6111214" />
+        </Style>
+        <Style Selector="TextBlock.name">
+            <Setter Property="Foreground" Value="#B5BAC1" />
+        </Style>
+        <Style Selector="TextBlock.name.speaking">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+    </Window.Styles>
+
+    <StackPanel x:Name="OverlayRoot"
+                Margin="16"
+                Spacing="6"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top">
+
+        <Border x:Name="StatusBorder"
+                IsVisible="False"
+                Background="#CC111214"
+                CornerRadius="6"
+                Padding="10,6">
+            <TextBlock x:Name="StatusText" Foreground="White" FontSize="13" />
+        </Border>
+
+        <ItemsControl x:Name="UsersList">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Spacing="6" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="local:VoiceUser">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Border Classes="ring"
+                                Classes.speaking="{Binding IsSpeaking}"
+                                Width="40" Height="40"
+                                CornerRadius="20"
+                                BorderThickness="2"
+                                Padding="2">
+                            <Border CornerRadius="16" ClipToBounds="True" Background="#5865F2">
+                                <Image Source="{Binding Avatar}" Stretch="UniformToFill" />
+                            </Border>
+                        </Border>
+
+                        <Border Classes="nameplate"
+                                Classes.speaking="{Binding IsSpeaking}"
+                                VerticalAlignment="Center"
+                                CornerRadius="6"
+                                Padding="8,4">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Classes="name"
+                                           Classes.speaking="{Binding IsSpeaking}"
+                                           Text="{Binding Name}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center" />
+                                <PathIcon Data="{StaticResource MicOffIcon}"
+                                          IsVisible="{Binding ShowMuted}"
+                                          Foreground="#F23F43"
+                                          Width="14" Height="14"
+                                          VerticalAlignment="Center" />
+                                <PathIcon Data="{StaticResource HeadsetOffIcon}"
+                                          IsVisible="{Binding IsDeafened}"
+                                          Foreground="#F23F43"
+                                          Width="14" Height="14"
+                                          VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
 </Window>
